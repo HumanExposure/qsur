@@ -16,3 +16,4 @@ Imports:
     tidyverse,
     proxy
 LazyData: true
+StagedInstall: no
