@@ -11,7 +11,7 @@ The United States Environmental Protection Agency, through its Office of Researc
 ## Installation
 Using the `devtools` package in R is the most straightforward way to download and install this package:
 ```{R}
-devtools::intsall_github("https://github.com/HumanExposure/qsur.git")
+devtools::install_github("https://github.com/HumanExposure/qsur.git")
 ```
 As a note: installation will take at lease 10 minutes (give or take) depending on the computer you are attempting to install this package on. The model files are quite large and thus will require time to download and install.
 
