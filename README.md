@@ -20,7 +20,7 @@ As a note: installation will take at lease 10 minutes (give or take) depending o
 ```{R}
 ## Path to file created obtained via download from US EPA's CompTox Chemials
 ## Dashboard (CCD).
-path <- "ccd_test_chems.tsv"
+path <- "ccd_test_chems.csv"
 
 ## Read the ToxPrint file. Change source to `chemotyper` if you have a
 ## ToxPrints file created from the ChemoTyper application. Supply the type
@@ -44,7 +44,7 @@ preds <- QSUR::predict_all_QSUR(models=qsurs,
 
 ## Get all of the predictions that are within the domain of applicability of
 ## a given model
-valids <- QSUR::in_domain(models=chems,
-                          df=chems,
-                          chemcial_id='dtxsid')
+valids <- QSUR::in_domain(models = qsurs,
+                          df = chems,
+                          chemical_id = "dtxsid")
 ```
