@@ -18,8 +18,8 @@ read_toxprints <- function(io,source,chemical_id=NULL){
         ## identifier colunm is only `M_NAME`
         df <- readr::read_tsv(io)
 
-        if (is.null(chemical_id)){chemical_id="chemical_id"}
-        df <- dplyr::rename(df,{{chemical_id}}:="M_NAME")
+        if (is.null(chemical_id)){chemical_id="M_NAME"}
+        # df <- dplyr::rename(df,{{chemical_id}}:="M_NAME")
 
     } else if (source == "ccd") {
         ## CCD: csv file, empty ToxPrints have N/A as first ToxPrint and are
@@ -41,7 +41,7 @@ read_toxprints <- function(io,source,chemical_id=NULL){
         cols <- c(chemical_id,tp)
         df <- df[which(colnames(df) %in% cols)]
 
-        ## Get rid of the problem childres -- that is the rows that have no
+        ## Get rid of the problem childs -- that is the rows that have no
         ## ToxPrints
         problems <- as.integer(dim(df[is.na(df['atom:element_main_group']),])[1])
         df <- df[!is.na(df['atom:element_main_group']),]
