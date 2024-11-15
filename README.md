@@ -13,6 +13,10 @@ Using the `devtools` package in R is the most straightforward way to download an
 ```{R}
 devtools::install_github("https://github.com/HumanExposure/qsur.git")
 ```
+If you are using the `renv` package to utilize self-contained coding environments, use can use the `renv::install` command to install this package instead.
+```{R}
+renv::install("HumanExposure/qsur")
+```
 As a note: installation will take at lease 10 minutes (give or take) depending on the computer you are attempting to install this package on. The model files are quite large and thus will require time to download and install.
 
 
