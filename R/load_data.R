@@ -94,7 +94,7 @@ get_toxprints <- function(smiles){
 #' calculate_toxprints()
 calculate_toxprints <- function(smiles){
     if (is.list(smiles)){
-        if (length(smilies) > 100){
+        if (length(smiles) > 100){
             ## Let's be polite to the API and chunk up calls of more than 100 chemicals.
             stop("For a list of more than 100 smiles, break it up into smaller chunks.")
         }
