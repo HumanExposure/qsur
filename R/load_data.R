@@ -60,6 +60,14 @@ read_toxprints <- function(io,source,chemical_id=NULL){
 
 
 
+
+
+#' Calculate ToxPrint features
+#'
+#' Hidden function to feed a single string to the API and return a named list with 
+#' ToxPrints as names and the binary value of each Print as the values .
+#' 
+#' @param smiles character of chemical structure representation with SMILES string
 get_toxprints <- function(smiles){
     host <-"https://hcd.rtpnc.epa.gov/api/descriptors?type=toxprints&smiles="
     url_smiles <- URLencode(smiles, reserved = TRUE)
@@ -79,10 +87,11 @@ get_toxprints <- function(smiles){
 #' will return a data.frame of ToxPrint features with the SMILES as the chemical_id 
 #' columns. This data.frame can then be used as input into the predict_all_QSUR or
 #' predict_one_QSUR functions.
-#' @param harmonized_use name of model to use
+#' @param smiles character of single chemical structure or list of multiple chemical 
+#' structure representations of SMILES strings
 #' @export
 #' @examples
-#' qsur_models()
+#' calculate_toxprints()
 calculate_toxprints <- function(smiles){
     if (is.list(smiles)){
         if (length(smilies) > 100){
