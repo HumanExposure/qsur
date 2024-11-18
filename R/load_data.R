@@ -59,6 +59,46 @@ read_toxprints <- function(io,source,chemical_id=NULL){
 }
 
 
+
+get_toxprints <- function(smiles){
+    host <-"https://hcd.rtpnc.epa.gov/api/descriptors?type=toxprints&smiles="
+    url_smiles <- URLencode(smiles, reserved = TRUE)
+    header <- "&headers=TRUE"
+    url <- glue::glue("{host}{url_smiles}{header}")
+    response <- httr::GET(url, config = httr::config(ssl_verifypeer = FALSE))
+    info <- jsonlite::fromJSON(rawToChar(result$content))
+    toxp <- setNames(as.list(info$chemicals$descriptors[[1]]), info$headers)
+    toxp <- append(c(chemical_id=smiles),toxp)
+    return (toxp)
+}
+
+
+#' Calculate ToxPrint features
+#'
+#' Supply either a single SMILES string or a list of SMILES strings and this function
+#' will return a data.frame of ToxPrint features with the SMILES as the chemical_id 
+#' columns. This data.frame can then be used as input into the predict_all_QSUR or
+#' predict_one_QSUR functions.
+#' @param harmonized_use name of model to use
+#' @export
+#' @examples
+#' qsur_models()
+calculate_toxprints <- function(smiles){
+    if (is.list(smiles)){
+        if (length(smilies) > 100){
+            ## Let's be polite to the API and chunk up calls of more than 100 chemicals.
+            stop("For a list of more than 100 smiles, break it up into smaller chunks.")
+        }
+        else{
+        df <- dplyr::bind_rows(lapply(smiles, get_toxprints))}
+    } else if (is.character(smiles)){
+        df <- dplyr::bind_rows(get_toxprints(smiles))
+    }
+    colnames(df) <- colnames(data.frame(df))
+    return(df)
+}
+
+
 #' Load QSUR Models
 #'
 #' Import a named list of all 39 valid, structure-only QSUR models contained
