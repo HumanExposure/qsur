@@ -4,7 +4,7 @@
 \alias{read_toxprints}
 \title{Read ToxPrints finger print file}
 \usage{
-read_toxprints(io, source, chemical_id = "chemical_id")
+read_toxprints(io, source, chemical_id = NULL)
 }
 \arguments{
 \item{io}{path and name of file to read}

@@ -74,7 +74,7 @@ get_toxprints <- function(smiles){
     header <- "&headers=TRUE"
     url <- glue::glue("{host}{url_smiles}{header}")
     response <- httr::GET(url, config = httr::config(ssl_verifypeer = FALSE))
-    info <- jsonlite::fromJSON(rawToChar(result$content))
+    info <- jsonlite::fromJSON(rawToChar(response$content))
     toxp <- setNames(as.list(info$chemicals$descriptors[[1]]), info$headers)
     toxp <- append(c(chemical_id=smiles),toxp)
     return (toxp)

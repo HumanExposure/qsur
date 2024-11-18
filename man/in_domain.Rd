@@ -4,12 +4,12 @@
 \alias{in_domain}
 \title{Predict if a record is in a model's domain of applicability}
 \usage{
-in_domain(df, models, chemical_id = "chemical_id", method = "jaccard")
+in_domain(models, df, chemical_id = "chemical_id", method = "jaccard")
 }
 \arguments{
-\item{df}{ToxPrint DataFrame of chemicals to predict}
-
 \item{models}{list of models, or "classes", for which to determine domain}
+
+\item{df}{ToxPrint DataFrame of chemicals to predict}
 
 \item{method}{distance metric to use for similarity calculation}
 
