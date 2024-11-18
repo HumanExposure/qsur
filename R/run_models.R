@@ -92,7 +92,8 @@ in_domain <- function(models,df,chemical_id='chemical_id',method="jaccard"){
 
     ## Get the original training set
     training <- QSUR:::fuse
-
+    training <- training %>% mutate(harmonized_use = forcats::fct_recode(harmonized_use,"rubber_additive" = "additive_for_rubber"))
+    training <- training %>% mutate(harmonized_use = forcats::fct_recode(harmonized_use, "rheology_modifier" = "rheology_modifer"))
     ## The distance/similarity cutoffs for each harmonized_use
     d_cuts <- QSUR:::d_cuts
 
