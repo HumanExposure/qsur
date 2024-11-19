@@ -89,17 +89,17 @@ get_toxprints <- function(smiles){
 #' predict_one_QSUR functions.
 #' @param smiles character of single chemical structure or list of multiple chemical 
 #' structure representations of SMILES strings
+#' @param pause delay between API calls to get ToxPrints from a SMILES string
 #' @export
 #' @examples
 #' calculate_toxprints()
-calculate_toxprints <- function(smiles){
-    if (is.list(smiles)){
-        if (length(smiles) > 100){
-            ## Let's be polite to the API and chunk up calls of more than 100 chemicals.
-            stop("For a list of more than 100 smiles, break it up into smaller chunks.")
-        }
-        else{
-        df <- dplyr::bind_rows(lapply(smiles, get_toxprints))}
+calculate_toxprints <- function(smiles, pause = 0.5){
+    if (is.list(smiles) | is.vector(smiles)){
+        rate <- purrr::rate_delay(pause=pause)
+        df <- dplyr::bind_rows(purrr::map(smiles,
+                                          purrr::slowly(\(x) get_toxprints(x),
+                               rate=rate,
+                               quiet=T)))
     } else if (is.character(smiles)){
         df <- dplyr::bind_rows(get_toxprints(smiles))
     }

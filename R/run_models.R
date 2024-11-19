@@ -19,6 +19,44 @@ model_predict <- function(model,df,type='prob'){
 }
 
 
+load_training <- function(){
+    ### Hidden function to load training set for QSUR models.
+    ###
+    ### The raw training set has two harmonzied functional uses whose name differs from
+    ### the QSUR model name: "rheology_modifer" and "additive_for_rubber". This function
+    ### loads the raw training set and changes those uses to "rheology_modifier" and 
+    ### "rubber_additive", respectively. This means that you actually get the correct
+    ### values for the domain of applicablilty calculation.
+    ###
+    ### Returns
+    ### -------
+    ### the training set dataframe
+
+    ## Set the alias for dplyr
+    `%>%` <- dplyr::`%>%`
+
+    ## Get the original training set
+    df <- QSUR:::fuse
+
+    ## Note that harmonized_use is a factor, not just characters, so you need to
+    ## recode the factors, not just replace text.
+    ## Change "additive_for_rubber" to "rubber_additive".
+    df <- df %>%
+              dplyr::mutate(harmonized_use =
+                            forcats::fct_recode(harmonized_use,
+                                                "rubber_additive" =
+                                                "additive_for_rubber"))
+
+    ## Change "rheology_modifer" to "rheology_modifier".
+    df <- df %>%
+              dplyr::mutate(harmonized_use =
+                            forcats::fct_recode(harmonized_use,
+                                                "rheology_modifier" =
+                                                "rheology_modifer"))
+     return(df)
+}
+
+
 
 #' Predict with a Single QSUR Model
 #'
@@ -90,10 +128,7 @@ in_domain <- function(models,df,chemical_id='chemical_id',method="jaccard"){
     ## The names data.frame assigned to ToxPrints when I first build the models
     toxps <- tail(colnames(as.data.frame(df)),n=-1)
 
-    ## Get the original training set
-    training <- QSUR:::fuse
-    training <- training %>% mutate(harmonized_use = forcats::fct_recode(harmonized_use,"rubber_additive" = "additive_for_rubber"))
-    training <- training %>% mutate(harmonized_use = forcats::fct_recode(harmonized_use, "rheology_modifier" = "rheology_modifer"))
+    training <- load_training()
     ## The distance/similarity cutoffs for each harmonized_use
     d_cuts <- QSUR:::d_cuts
 
@@ -148,4 +183,24 @@ in_domain <- function(models,df,chemical_id='chemical_id',method="jaccard"){
     ## Return data frame indices of records within domain of applicability
 
     return(domain)
+}
+
+
+
+#' Predict a chemical for all QSURs and only return predictions that are in domain
+#' for each model
+#'
+#'
+#' @param models list of models, or "classes", for which to determine domain
+#' @param df ToxPrint DataFrame of chemicals to predict
+#' @param chemical_id name of column in dataframe that is consider the chemical
+#' identifier columns
+#' @param method distance metric to use for similarity calculation
+#' @export
+predict_all_in_domain <- function(models,df,type="prob",chemical_id='chemical_id',method="jaccard"){
+    preds <- predict_all_QSUR(models = models, df = df, type = type, chemical_id = chemical_id)
+    domap <- in_domain(models=models,df=df, chemical_id=chemical_id, method=method)
+    df <- preds
+    df[domap==FALSE] <- NA
+    return(df)
 }

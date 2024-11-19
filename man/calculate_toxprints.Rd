@@ -4,11 +4,13 @@
 \alias{calculate_toxprints}
 \title{Calculate ToxPrint features}
 \usage{
-calculate_toxprints(smiles)
+calculate_toxprints(smiles, pause = 0.5)
 }
 \arguments{
 \item{smiles}{character of single chemical structure or list of multiple chemical
 structure representations of SMILES strings}
+
+\item{pause}{delay between API calls to get ToxPrints from a SMILES string}
 }
 \description{
 Supply either a single SMILES string or a list of SMILES strings and this function
