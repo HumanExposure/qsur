@@ -75,7 +75,9 @@ ChemoTyper's output file has the following format:
 |DTXSID10196165|0|...|
 |DTXSID1020697|0|...|
 |DTXSID1026796|0|...|
+
 Note: usually to get a working file from ChemoTyper, you must have a `.smi` file similar to that in `tests/test.smi`, then ChemoTyper will convert this to a file with the above format. If you wish to skip this step, you can now use the option to retrieve the ToxPrints with the `calculate_toxprints` function (see **Using a File of SMILES below**).
+
 ```{R}
 ## Path to file created from the ChemoTyper application.
 path <- "tests/toxprints_chemotyper_test.csv"
