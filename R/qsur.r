@@ -1,11 +1,14 @@
 #' QSUR.
 #' QSUR: A package storing 39 structure based QSUR models.
 #'
-#' The QSUR package contains all 39 validated quantitative structure-use
-#' relationship models that were developed in Phillips et al 2017
-#' (https://doi.org/10.1039/C6GC02744J). It contains three differnt data
-#' objects: qsur_model_list, qsur_model_training_set, and toxprint_names.
+#' Description: Encapsulates the quantitative structure-use relationship models developed 
+#'     in *High-throughput screening of chemicals as functional substitutes using 
+#'     structure-based classification models* (DOI: https://doi.org/10.1039/c6gc02744j)
+#'     along with the capabilities to load new external chemicals for prediction and use 
+#'     the models themeselves for predicting.
 #'
+"_PACKAGE"
+
 #' @section qsur_models
 #' qsur_model_list list is a named list with the harmonized functional use being
 #' the name and the randomForest model object being the item. The following are
